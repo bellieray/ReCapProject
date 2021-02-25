@@ -1,4 +1,7 @@
 ﻿using Business.Abstract;
+using Core.Utilities;
+using Core.Utilities.Results;
+using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -8,9 +11,18 @@ namespace Business.Concrete
 {
     public class ColorManager : IColorService
     {
-        public List<Color> GetColors()
+        IColorDal _colorDal;
+
+        public ColorManager(IColorDal colorDal)
         {
-            throw new NotImplementedException();
+            this._colorDal = colorDal;
         }
+    
+        public IDataResult<List<Color>> GetColors()
+        {
+            return new SuccessDataResult<List<Color>>(_colorDal.GetAll(), "Renkler Listelendi");
+        }
+
+       
     }
 }

@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Core.Utilities;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
@@ -18,47 +20,54 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
-        public void Add(Car car)
+        public IResult Add(Car car)
         {
             if(car.Description.Length > 2 && car.DailyPrice > 0)
             {
                 _carDal.Add(car);
             }
-            else
+            
+            
+                return new ErrorResult("Araba Listelenemedi");
+            
+        }
+
+        public IResult Delete(Car car)
+        {
+            _carDal.Delete(car);
+            return new SuccessResult("Seçilen araba silinemedi");
+        }
+
+        public IDataResult<List<Car>> GetAll() 
+        {
+
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(),"Tüm arabalar listelendi");
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarDetails()
+        {
+            if (DateTime.Now.Hour == 15)
             {
-                Console.WriteLine("Arac Ekleme Başarısız");
+                return new ErrorDataResult<List<CarDetailDto>>("Detaylar yüklenemedi");
             }
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetProductDetails(),"Araba detayları getirildi");
         }
 
-        public void Delete(Car car)
+        public IDataResult<List<Car>> GetCarsByBrandId(int brandid)
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(p => p.BrandID == brandid),"Seçiilen id ye göre arabalar getirildi");
         }
 
-        public List<Car> GetAll() 
+        public IDataResult<List<Car>> GetCarsByColorId(int colorid)
         {
-
-            return _carDal.GetAll();
+          
+          return new SuccessDataResult<List<Car>>(_carDal.GetAll(p => p.ColorID == colorid),"Renge göre araba listelendi");
         }
 
-        public List<CarDetailDto> GetCarDetails()
+        public IResult Update(Car car)
         {
-            return _carDal.GetProductDetails();
-        }
-
-        public List<Car> GetCarsByBrandId(int brandid)
-        {
-            return _carDal.GetAll(p => p.BrandID == brandid);
-        }
-
-        public List<Car> GetCarsByColorId(int colorid)
-        {
-            return _carDal.GetAll(p => p.ColorID == colorid);
-        }
-
-        public void Update(Car car)
-        {
-            throw new NotImplementedException();
+            _carDal.Update(car);
+            return new SuccessResult("Araba güncellendi");
         }
     }
 }

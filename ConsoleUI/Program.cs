@@ -13,17 +13,31 @@ namespace ConsoleUI
         static void Main(string[] args)
         {
             //   memoryMethod();
-           // carMethod();
-            CarManager carManager = new CarManager(new EfCarDal());
-
-            foreach (var car in carManager.GetCarDetails())
-            {
-                System.Console.WriteLine(car.BrandName + " " + car. + " " + car.ColorName + " " + car.DailyPrice);
-            }
+            // carMethod();
+            carMethodd();
 
         }
 
-        private static void carMethod()
+        private static void carMethodd()
+        {
+            CarManager carManager = new CarManager(new EfCarDal());
+
+            var result = carManager.GetCarDetails();
+            if(result.Success == true)
+            {
+                foreach (var car in carManager.GetCarDetails().Data)
+                {
+                    System.Console.WriteLine(car.BrandName + " " + car.ColorName + " " + car.DailyPrice);
+                }
+            }
+            else
+            {
+                Console.WriteLine(result.Message);
+            }
+            
+        }
+
+       /* private static void carMethod()
         {
             CarManager carManager = new CarManager(new EfCarDal());
             foreach (var car in carManager.GetAll())
@@ -41,5 +55,6 @@ namespace ConsoleUI
                 Console.WriteLine(car.BrandID);
             }
         }
+       */
     }
 }
