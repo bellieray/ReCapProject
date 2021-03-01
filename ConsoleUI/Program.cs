@@ -28,7 +28,7 @@ namespace ConsoleUI
                 foreach (var car in carManager.GetCarDetails().Data)
                 {
                     System.Console.WriteLine(car.BrandName + " " + car.ColorName + " " + car.DailyPrice);
-                }
+                }       
             }
             else
             {

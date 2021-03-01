@@ -35,7 +35,7 @@ namespace Business.Concrete
         public IResult Delete(Car car)
         {
             _carDal.Delete(car);
-            return new SuccessResult("Seçilen araba silinemedi");
+            return new SuccessResult("Seçilen araba silindi");
         }
 
         public IDataResult<List<Car>> GetAll() 
@@ -46,7 +46,7 @@ namespace Business.Concrete
 
         public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
-            if (DateTime.Now.Hour == 15)
+            if (DateTime.Now.Hour == 11)
             {
                 return new ErrorDataResult<List<CarDetailDto>>("Detaylar yüklenemedi");
             }
